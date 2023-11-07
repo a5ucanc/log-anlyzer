@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
-from encoder import CustomJSONEncoder
+from .encoder import CustomJSONEncoder
 
 
 class LogLevel(Enum):
