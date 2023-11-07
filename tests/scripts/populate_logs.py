@@ -1,10 +1,12 @@
 import datetime
-
-from log_parser.log import Log, LogLevel
+from pathlib import Path
+from log_analyzer.log_parser.log import Log, LogLevel
 import random
 
 
 def generate_dummy_log_file(file_path, num_entries=10000):
+    file_path = Path(file_path)
+    file_path.parent.mkdir(parents=True, exist_ok=True)
     with open(file_path, 'w') as log_file:
         for _ in range(num_entries):
             # Generate a random timestamp
