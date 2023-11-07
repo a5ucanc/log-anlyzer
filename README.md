@@ -1,2 +1,2 @@
-# Log-Parser
-Python log parser
+# log-analyzer
+Python log analyzer
