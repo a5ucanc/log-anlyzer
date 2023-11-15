@@ -16,26 +16,28 @@ class Database:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        self.conn.commit()
         self.conn.close()
 
     def create_table(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS logs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                datetime TEXT,
+                timestamp TEXT,
                 level TEXT,
                 message TEXT
             )
         ''')
 
-    def insert(self, datetime, level, message):
+    def insert(self, timestamp, level, message):
         self.cursor.execute('''
-            INSERT INTO logs (datetime, level, message)
+            INSERT INTO logs (timestamp, level, message)
             VALUES (?, ?, ?)
-        ''', (datetime, level, message))
-        self.conn.commit()
+        ''', (timestamp, level, message))
 
-    def select(self, level=None, message=None, datetime=None):
+
+
+    def select(self, level=None, message=None, timestamp=None):
         query = 'SELECT * FROM logs'
         params = []
         if level:
@@ -44,16 +46,17 @@ class Database:
         if message:
             query += ' WHERE message LIKE ?'
             params.append(f'%{message}%')
-        if datetime:
-            query += ' WHERE datetime LIKE ?'
-            params.append(f'%{datetime}%')
+        if timestamp:
+            query += ' WHERE timestamp LIKE ?'
+            params.append(f'%{timestamp}%')
         self.cursor.execute(query, params)
         return self.cursor.fetchall()
 
     def delete(self, id):
         self.cursor.execute('DELETE FROM logs WHERE id = ?', (id,))
-        self.conn.commit()
 
     def delete_all(self):
         self.cursor.execute('DELETE FROM logs')
+
+    def commit(self):
         self.conn.commit()

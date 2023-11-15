@@ -9,3 +9,6 @@ venv.bak/
 
 # dummy data log files
 log.*
+
+# database files
+*.sqlite3
